@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import './NewPost.css';
 
@@ -6,7 +7,8 @@ class NewPost extends Component {
     state = {
         title: '',
         bodyen: '',
-        author: 'Max'
+        author: 'Max',
+        submited: false
     }
 
     postDataHandler = () => {
@@ -21,11 +23,18 @@ class NewPost extends Component {
         .then(resp => resp.json())
         .then(resp => 
             console.log(resp))
+            //this.setState({submited: true});  renderowanie warunkowe, alternatywne do history
+            this.props.history.replace('/posts');
     }
 
     render () {
+        let redirected = null;
+        if (this.state.submited) {
+            redirected = <Redirect to='/posts'/>
+        }
         return (
             <div className="NewPost">
+                {redirected}
                 <h1>Add a Post</h1>
                 <label>Title</label>
                 <input type="text" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} />
